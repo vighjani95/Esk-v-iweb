@@ -7,8 +7,8 @@ const firebaseConfig = {
   authDomain: 'eskuvoi-webgaleria.firebaseapp.com',
   projectId: 'eskuvoi-webgaleria',
   storageBucket: 'eskuvoi-webgaleria.appspot.com',
-  messagingSenderId: '209353421110',
-  appId: '1:209353421110:web:289a0b4b06e57691a7655f',
+  messagingSenderId: '209353412110',
+  appId: '1:209353412110:web:398e824b96e557601a765f',
 }
 
 const app = initializeApp(firebaseConfig)
