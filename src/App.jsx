@@ -410,14 +410,14 @@ function RSVPSection() {
   return (
     <div className="relative w-full md:w-1/2 flex flex-col justify-start items-center bg-[#FFF0F5] p-10 animate-fade-in-up overflow-y-auto">
       <h2 className="text-3xl md:text-5xl font-serif italic mb-8 text-center">
-        Visszaigazolás
+        Visszajelzés
       </h2>
       
       <div className="text-center mb-8 max-w-2xl">
         <p className="text-gray-700 mb-6">
           Kedves Vendégeink! 💌
           <br />
-          Kérjük, erősítsétek meg részvételiteket legkésőbb 2025. május 15-ig.
+          Kérjük, erősítsétek meg részvételi szándékotokat legkésőbb 2025. május 15-ig.
         </p>
       </div>
 
@@ -449,7 +449,7 @@ function RSVPSection() {
           </div>
 
           <div>
-            <label htmlFor="vendégek" className="block text-gray-700 mb-2">Vendégek száma</label>
+            <label htmlFor="vendégek" className="block text-gray-700 mb-2">Résztvevők száma</label>
             <select
               id="vendégek"
               name="vendégek"
@@ -832,7 +832,7 @@ function RouteLodgingSection() {
               className="w-10 h-10"
             />
           </a>
-          <p className="mt-2 text-sm font-medium">Opció 1</p>
+          <p className="mt-2 text-sm font-medium">Opció 1 🚗</p>
         </div>
 
         {/* Opció 2 */}
@@ -850,7 +850,7 @@ function RouteLodgingSection() {
               className="w-10 h-10"
             />
           </a>
-          <p className="mt-2 text-sm font-medium">Opció 2</p>
+          <p className="mt-2 text-sm font-medium">Opció 2 🚗</p>
         </div>
 
         {/* Opció 3 */}
@@ -868,7 +868,7 @@ function RouteLodgingSection() {
               className="w-10 h-10"
             />
           </a>
-          <p className="mt-2 text-sm font-medium">Opció 3</p>
+          <p className="mt-2 text-sm font-medium">Opció 3 🚗</p>
         </div>
       </div>
 
@@ -892,7 +892,7 @@ function RouteLodgingSection() {
                 className="w-10 h-10"
               />
             </a>
-            <p className="text-sm font-medium">Szállás</p>
+            <p className="text-sm font-medium">Szállás 🛌</p>
           </div>
 
           {/* Képnézegető */}

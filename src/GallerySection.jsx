@@ -73,7 +73,7 @@ const GallerySection = () => {
           Kedves Vendégeink! 📸
           <br />
           Kérjük, osszátok meg velünk az esküvőn készült fotóitokat. 
-          A képeket a Google Drive mappában tudjátok feltölteni.
+          A képeket a Google Drive mappába tudjátok feltölteni.
         </p>
         
         <div className="flex justify-center">
