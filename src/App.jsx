@@ -7,6 +7,7 @@ export default function App() {
   const [showContact, setShowContact] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
   const [showMusic, setShowMusic] = useState(false);
+  const [showRouteLodging, setShowRouteLodging] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function App() {
     setShowContact(false);
     setShowMusic(false);
     setShowGallery(false);
+    setShowRouteLodging(false);
   };
 
   return (
@@ -34,6 +36,7 @@ export default function App() {
         setShowContact={setShowContact}
         setShowMusic={setShowMusic}
         setShowGallery={setShowGallery}
+        setShowRouteLodging={setShowRouteLodging}
         isMobile={isMobile}
         closeAllSections={closeAllSections}
       />
@@ -47,6 +50,8 @@ export default function App() {
         <MusicSection />
       ) : showGallery ? (
         <GallerySection />
+      ) : showRouteLodging ? (
+        <RouteLodgingSection />
       ) : (
         <HeroSection onRSVPClick={() => setShowRSVP(true)} />
       )}
@@ -60,6 +65,7 @@ function Sidebar({
   setShowContact,
   setShowMusic,
   setShowGallery,
+  setShowRouteLodging,
   isMobile,
   closeAllSections,
 }) {
@@ -112,6 +118,7 @@ function Sidebar({
         setShowContact={setShowContact}
         setShowMusic={setShowMusic}
         setShowGallery={setShowGallery}
+        setShowRouteLodging={setShowRouteLodging}
         closeAllSections={closeAllSections}
       />
     </div>
@@ -124,6 +131,7 @@ function Menu({
   setShowContact,
   setShowMusic,
   setShowGallery,
+  setShowRouteLodging,
   closeAllSections,
 }) {
   const [open, setOpen] = useState(false);
@@ -179,7 +187,7 @@ function Menu({
               onClick={() => handleMenuClick(setShowRSVP)}
               className="flex items-center gap-2 text-white text-sm hover:text-lg hover:font-semibold hover:scale-105 hover:underline underline-offset-4 transform transition-all duration-300 ease-in-out"
             >
-              ✍️ RSVP
+              ✍️ Visszajelzés
             </button>
           </li>
           <li className="py-2">
@@ -204,6 +212,14 @@ function Menu({
               className="flex items-center gap-2 text-white text-sm hover:text-base hover:font-semibold hover:scale-105 hover:underline underline-offset-4 transform transition-all duration-300 ease-in-out"
             >
               🎵 Zene kívánságlista
+            </button>
+          </li>
+          <li className="py-2">
+            <button
+              onClick={() => handleMenuClick(setShowRouteLodging)}
+              className="flex items-center gap-2 text-white text-sm hover:text-base hover:font-semibold hover:scale-105 hover:underline underline-offset-4 transform transition-all duration-300 ease-in-out"
+            >
+              🗺️ Útvonal & Szállás
             </button>
           </li>
         </ul>
@@ -255,7 +271,7 @@ function HeroSection({ onRSVPClick }) {
         onClick={onRSVPClick}
         className="mt-6 px-6 py-2 border-2 border-black text-black hover:bg-black hover:text-white transition rounded-full text-lg"
       >
-        RSVP
+        Visszajelzés
       </button>
     </div>
   );
@@ -334,10 +350,212 @@ function EventsSection() {
 }
 
 function RSVPSection() {
+  const [formData, setFormData] = useState({
+    név: '',
+    vendégek: 1,
+    részvétel: 'igen',
+    szállás: 'nem',
+    üzenet: ''
+  });
+  const [elküldve, setElküldve] = useState(false);
+  const [betöltés, setBetöltés] = useState(false);
+  const [hiba, setHiba] = useState(null);
+
+  const változásKezelése = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const beküldésKezelése = async (e) => {
+    e.preventDefault();
+    setBetöltés(true);
+    setHiba(null);
+
+    try {
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxa5-3QOIVlifcPOdLAU0HA0DqJzkZbEiCcn7lypYxusad6qNP6EHVaADA4GYABL9_P/exec';
+      
+      const adatParaméterek = new URLSearchParams();
+      adatParaméterek.append('név', formData.név);
+      adatParaméterek.append('vendégek', formData.vendégek);
+      adatParaméterek.append('részvétel', formData.részvétel);
+      adatParaméterek.append('szállás', formData.szállás);
+      adatParaméterek.append('üzenet', formData.üzenet);
+
+      const válasz = await fetch(`${SCRIPT_URL}?${adatParaméterek.toString()}`, {
+        method: 'GET',
+        redirect: 'follow'
+      });
+
+      setElküldve(true);
+      setTimeout(() => setElküldve(false), 5000);
+      setFormData({
+        név: '',
+        vendégek: 1,
+        részvétel: 'igen',
+        szállás: 'nem',
+        üzenet: ''
+      });
+
+    } catch (err) {
+      console.error('Hiba történt:', err);
+      setHiba('Sikertelen beküldés. Kérlek próbáld újra!');
+    } finally {
+      setBetöltés(false);
+    }
+  };
+
   return (
-    <div className="relative w-full md:w-1/2 flex flex-col justify-center items-center bg-[#FFF0F5] p-10 text-center shadow-lg">
-      <h3 className="text-xl font-semibold mb-4">RSVP</h3>
-      {/* RSVP form will go here */}
+    <div className="relative w-full md:w-1/2 flex flex-col justify-start items-center bg-[#FFF0F5] p-10 animate-fade-in-up overflow-y-auto">
+      <h2 className="text-3xl md:text-5xl font-serif italic mb-8 text-center">
+        Visszaigazolás
+      </h2>
+      
+      <div className="text-center mb-8 max-w-2xl">
+        <p className="text-gray-700 mb-6">
+          Kedves Vendégeink! 💌
+          <br />
+          Kérjük, erősítsétek meg részvételiteket legkésőbb 2025. május 15-ig.
+        </p>
+      </div>
+
+      {hiba && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 w-full max-w-md">
+          <p>{hiba}</p>
+          <button 
+            onClick={() => setHiba(null)}
+            className="mt-2 text-red-500 hover:text-red-700"
+          >
+            Bezárás
+          </button>
+        </div>
+      )}
+
+      {!elküldve ? (
+        <form onSubmit={beküldésKezelése} className="w-full max-w-md space-y-6">
+          <div>
+            <label htmlFor="név" className="block text-gray-700 mb-2">Név*</label>
+            <input
+              type="text"
+              id="név"
+              name="név"
+              value={formData.név}
+              onChange={változásKezelése}
+              required
+              className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-pink-500 focus:border-pink-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="vendégek" className="block text-gray-700 mb-2">Vendégek száma</label>
+            <select
+              id="vendégek"
+              name="vendégek"
+              value={formData.vendégek}
+              onChange={változásKezelése}
+              className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-pink-500 focus:border-pink-500"
+            >
+              {[1, 2, 3, 4, 5].map(num => (
+                <option key={num} value={num}>{num}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <span className="block text-gray-700 mb-2">Részt veszel?</span>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="részvétel"
+                  value="igen"
+                  checked={formData.részvétel === 'igen'}
+                  onChange={változásKezelése}
+                  className="text-pink-500"
+                />
+                <span className="ml-2">Igen, ott leszek! 🎉</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="részvétel"
+                  value="nem"
+                  checked={formData.részvétel === 'nem'}
+                  onChange={változásKezelése}
+                  className="text-pink-500"
+                />
+                <span className="ml-2">Sajnos nem 😢</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <span className="block text-gray-700 mb-2">Szükséged van szállásra?</span>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="szállás"
+                  value="igen"
+                  checked={formData.szállás === 'igen'}
+                  onChange={változásKezelése}
+                  className="text-pink-500"
+                />
+                <span className="ml-2">Igen</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="szállás"
+                  value="nem"
+                  checked={formData.szállás === 'nem'}
+                  onChange={változásKezelése}
+                  className="text-pink-500"
+                />
+                <span className="ml-2">Nem</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="üzenet" className="block text-gray-700 mb-2">Üzenet (opcionális)</label>
+            <textarea
+              id="üzenet"
+              name="üzenet"
+              value={formData.üzenet}
+              onChange={változásKezelése}
+              rows={3}
+              className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:ring-pink-500 focus:border-pink-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={betöltés}
+            className="w-full px-6 py-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {betöltés ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                Küldés...
+              </>
+            ) : (
+              'Visszaigazolás küldése'
+            )}
+          </button>
+        </form>
+      ) : (
+        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 w-full max-w-md">
+          <p className="font-bold">Köszönjük a visszajelzést!</p>
+          <p>A visszaigazolásodat sikeresen elküldtük.</p>
+        </div>
+      )}
+
+      <div className="mt-8 text-center text-sm text-gray-500">
+        <p>Kérjük, küldd el visszaigazolásodat legkésőbb 2025. május 15-ig.</p>
+      </div>
     </div>
   );
 }
@@ -574,5 +792,146 @@ function AdminDownloadButton() {
     >
       {loading ? "Letöltés..." : "🎧 Admin letöltés"}
     </button>
+  );
+}
+
+function RouteLodgingSection() {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  
+  // Szállás képei (Google-ból)
+  const hotelImages = [
+    "https://i.szalas.hu/hotels/1420570/original/37241757.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241760.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241761.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241762.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241764.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241766.webp",
+    "https://i.szalas.hu/hotels/1420570/original/37241767.webp"
+  ];
+
+  return (
+    <div className="relative w-full md:w-1/2 flex flex-col justify-start items-center bg-[#FFF0F5] p-6 md:p-8 animate-fade-in-up overflow-y-auto">
+      <h2 className="text-2xl md:text-4xl font-serif italic mb-8 text-center">
+        Útvonal & Szállás
+      </h2>
+
+      {/* 3 útvonal opció körökben */}
+      <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-8 w-full mb-12">
+        {/* Opció 1 */}
+        <div className="flex flex-col items-center">
+          <a
+            href="https://maps.app.goo.gl/18nkwcE3fFji1ftp7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            title="Opció 1"
+          >
+            <img
+              src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
+              alt="Térkép"
+              className="w-10 h-10"
+            />
+          </a>
+          <p className="mt-2 text-sm font-medium">Opció 1</p>
+        </div>
+
+        {/* Opció 2 */}
+        <div className="flex flex-col items-center">
+          <a
+            href="https://maps.app.goo.gl/3pr3GarSkqeVSEyA9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            title="Opció 2"
+          >
+            <img
+              src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
+              alt="Térkép"
+              className="w-10 h-10"
+            />
+          </a>
+          <p className="mt-2 text-sm font-medium">Opció 2</p>
+        </div>
+
+        {/* Opció 3 */}
+        <div className="flex flex-col items-center">
+          <a
+            href="https://maps.app.goo.gl/8ZCNCUpg8G4RjMjb7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            title="Opció 3"
+          >
+            <img
+              src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
+              alt="Térkép"
+              className="w-10 h-10"
+            />
+          </a>
+          <p className="mt-2 text-sm font-medium">Opció 3</p>
+        </div>
+      </div>
+
+      {/* Szállás rész - 4. kör + képnézegető */}
+      <div className="w-full max-w-3xl">
+        <h3 className="text-xl font-serif italic mb-6 text-center">Szállás</h3>
+        
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+          {/* 4. kör - Hotel térkép */}
+          <div className="flex flex-col items-center w-full md:w-auto">
+            <a
+              href="https://www.google.com/maps/place/Hotel+Restaurant+Merion/@47.0303546,23.9267776,17z/data=!3m1!4b1!4m9!3m8!1s0x4749bd9f2d200143:0xc095f8e0461c0b7e!5m2!4m1!1i2!8m2!3d47.0303546!4d23.9293525!16s%2Fg%2F11ktbc36mn?hl=hu&entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50 mb-3"
+              title="Hotel térkép"
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
+                alt="Térkép"
+                className="w-10 h-10"
+              />
+            </a>
+            <p className="text-sm font-medium">Szállás</p>
+          </div>
+
+          {/* Képnézegető */}
+          <div className="flex-1 w-full">
+            <div className="relative h-56 md:h-64 w-full rounded-xl overflow-hidden shadow-lg border-2 border-pink-200">
+              <img
+                src={hotelImages[activeImageIndex]}
+                alt={`Hotel kép ${activeImageIndex + 1}`}
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Navigációs gombok */}
+              <button
+                onClick={() => setActiveImageIndex(prev => (prev > 0 ? prev - 1 : hotelImages.length - 1))}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-1.5 rounded-full hover:bg-opacity-70"
+              >
+                ←
+              </button>
+              <button
+                onClick={() => setActiveImageIndex(prev => (prev < hotelImages.length - 1 ? prev + 1 : 0))}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-1.5 rounded-full hover:bg-opacity-70"
+              >
+                →
+              </button>
+              
+              {/* Pont indikátorok */}
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                {hotelImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`w-2 h-2 rounded-full ${activeImageIndex === idx ? 'bg-pink-500' : 'bg-gray-300'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
