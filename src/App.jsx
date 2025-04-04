@@ -29,7 +29,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative flex flex-col md:flex-row h-screen bg-[#FFF0F5]">
+    <div className="flex flex-col md:flex-row h-screen bg-[#FFF0F5]">
       <Sidebar
         setShowRSVP={setShowRSVP}
         setShowEvents={setShowEvents}
