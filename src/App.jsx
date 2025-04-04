@@ -29,7 +29,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-[#FFF0F5]">
+    <div className="relative flex flex-col md:flex-row h-screen md:h-screen bg-[#FFF0F5]">
       <Sidebar
         setShowRSVP={setShowRSVP}
         setShowEvents={setShowEvents}
@@ -270,7 +270,7 @@ function HeroSection({ onRSVPClick }) {
   }
 
   return (
-    <div className="relative w-full md:w-1/2 flex-grow flex flex-col justify-center items-center bg-[#FFF0F5] p-10 text-center shadow-lg border-4 border-dashed border-pink-200 rounded-[3rem]">
+    <div className="relative w-full md:w-1/2 flex flex-col justify-center items-center bg-[#FFF0F5] p-10 text-center shadow-lg border-4 border-dashed border-pink-200 rounded-[3rem] h-[calc(50vh-1rem)] md:h-auto">
       <h2 className="text-2xl md:text-3xl font-serif italic">
         Szamosújvár, Románia
       </h2>
