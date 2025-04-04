@@ -146,3 +146,8 @@ button {
   border-radius: 5px;
   margin: 1rem 0;
 }
+@supports (height: 100dvh) {
+  :root {
+    --vh: 1dvh;
+  }
+}

@@ -59,6 +59,14 @@ export default function App() {
   );
 }
 
+function Copyright() {
+  return (
+    <div className="text-center text-xs text-gray-500 mt-8 pb-4 md:hidden">
+      <p>© 2025 Vigh János Róbert - Minden jog fenntartva</p>
+    </div>
+  );
+}
+
 function Sidebar({
   setShowRSVP,
   setShowEvents,
@@ -109,6 +117,12 @@ function Sidebar({
           <h1 className="text-3xl md:text-5xl font-serif italic text-white drop-shadow-[2px_2px_3px_black]">
             Mesi & János
           </h1>
+        </div>
+      )}
+
+      {!isMobile && (
+        <div className="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-300">
+          <p>© 2025 Vigh János Róbert - Minden jog fenntartva</p>
         </div>
       )}
 
@@ -256,7 +270,7 @@ function HeroSection({ onRSVPClick }) {
   }
 
   return (
-    <div className="relative w-full md:w-1/2 flex flex-col justify-center items-center bg-[#FFF0F5] p-10 text-center shadow-lg border-4 border-dashed border-pink-200 rounded-[3rem]">
+    <div className="relative w-full md:w-1/2 flex-grow flex flex-col justify-center items-center bg-[#FFF0F5] p-10 text-center shadow-lg border-4 border-dashed border-pink-200 rounded-[3rem]">
       <h2 className="text-2xl md:text-3xl font-serif italic">
         Szamosújvár, Románia
       </h2>
@@ -273,6 +287,7 @@ function HeroSection({ onRSVPClick }) {
       >
         Visszajelzés
       </button>
+      <Copyright />
     </div>
   );
 }
@@ -288,7 +303,7 @@ function EventsSection() {
         />
       ),
       title: "Búcsúztató",
-      time: "10:00",
+      time: "12:00",
       link: "https://www.google.com/maps/place/Strada+Emil+Precup+13,+Gherla+405300,+Rom%C3%A1nia/@47.0372224,23.9160485,17z/data=!3m1!4b1!4m6!3m5!1s0x4749bdc1cdd8257f:0x708dba33b0dbbc2!8m2!3d47.0372225!4d23.9209194!16s%2Fg%2F11pzxhgxy5?hl=hu&entry=ttu&g_ep=EgoyMDI1MDMxOS4yIKXMDSoASAFQAw%3D%3D",
     },
     {
@@ -345,6 +360,7 @@ function EventsSection() {
           </div>
         ))}
       </div>
+      <Copyright />
     </div>
   );
 }
@@ -556,6 +572,7 @@ function RSVPSection() {
       <div className="mt-8 text-center text-sm text-gray-500">
         <p>Kérjük, küldd el visszaigazolásodat legkésőbb 2025. május 15-ig.</p>
       </div>
+      <Copyright />
     </div>
   );
 }
@@ -608,6 +625,7 @@ function ContactSection() {
           </a>
         </div>
       </div>
+      <Copyright />
     </div>
   );
 }
@@ -749,6 +767,7 @@ function MusicSection() {
           <AdminDownloadButton />
         </div>
       </div>
+      <Copyright />
     </div>
   );
 }
@@ -810,26 +829,26 @@ function RouteLodgingSection() {
   ];
 
   return (
-    <div className="relative w-full md:w-1/2 flex flex-col justify-start items-center bg-[#FFF0F5] p-6 md:p-8 animate-fade-in-up overflow-y-auto">
+    <div className="relative w-full md:w-1/2 flex flex-col justify-start items-center bg-[#FFF0F5] p-10 animate-fade-in-up overflow-y-auto">
       <h2 className="text-2xl md:text-4xl font-serif italic mb-8 text-center">
         Útvonal & Szállás
       </h2>
 
-      {/* 3 útvonal opció körökben */}
-      <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-8 w-full mb-12">
+      {/* 3 útvonal opció körökben - itt növeltem a gap értékeket */}
+      <div className="flex flex-row flex-wrap justify-center items-center gap-8 md:gap-12 w-full mb-12">
         {/* Opció 1 */}
         <div className="flex flex-col items-center">
           <a
             href="https://maps.app.goo.gl/18nkwcE3fFji1ftp7"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
             title="Opció 1"
           >
             <img
               src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
               alt="Térkép"
-              className="w-10 h-10"
+              className="w-8 h-8 md:w-10 md:h-10"
             />
           </a>
           <p className="mt-2 text-sm font-medium">Opció 1 🚗</p>
@@ -841,13 +860,13 @@ function RouteLodgingSection() {
             href="https://maps.app.goo.gl/3pr3GarSkqeVSEyA9"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
             title="Opció 2"
           >
             <img
               src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
               alt="Térkép"
-              className="w-10 h-10"
+              className="w-8 h-8 md:w-10 md:h-10"
             />
           </a>
           <p className="mt-2 text-sm font-medium">Opció 2 🚗</p>
@@ -859,13 +878,13 @@ function RouteLodgingSection() {
             href="https://maps.app.goo.gl/8ZCNCUpg8G4RjMjb7"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
+            className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50"
             title="Opció 3"
           >
             <img
               src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
               alt="Térkép"
-              className="w-10 h-10"
+              className="w-8 h-8 md:w-10 md:h-10"
             />
           </a>
           <p className="mt-2 text-sm font-medium">Opció 3 🚗</p>
@@ -876,20 +895,20 @@ function RouteLodgingSection() {
       <div className="w-full max-w-3xl">
         <h3 className="text-xl font-serif italic mb-6 text-center">Szállás</h3>
         
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           {/* 4. kör - Hotel térkép */}
           <div className="flex flex-col items-center w-full md:w-auto">
             <a
               href="https://www.google.com/maps/place/Hotel+Restaurant+Merion/@47.0303546,23.9267776,17z/data=!3m1!4b1!4m9!3m8!1s0x4749bd9f2d200143:0xc095f8e0461c0b7e!5m2!4m1!1i2!8m2!3d47.0303546!4d23.9293525!16s%2Fg%2F11ktbc36mn?hl=hu&entry=ttu&g_ep=EgoyMDI1MDMzMC4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50 mb-3"
+              className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-white border-2 border-pink-300 flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110 hover:bg-pink-50 mb-3"
               title="Hotel térkép"
             >
               <img
                 src="https://img.icons8.com/ios-filled/50/000000/google-maps.png"
                 alt="Térkép"
-                className="w-10 h-10"
+                className="w-8 h-8 md:w-10 md:h-10"
               />
             </a>
             <p className="text-sm font-medium">Szállás 🛌</p>
@@ -932,6 +951,7 @@ function RouteLodgingSection() {
           </div>
         </div>
       </div>
+      <Copyright />
     </div>
   );
 }

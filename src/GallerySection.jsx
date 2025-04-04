@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
+function Copyright() {
+  return (
+    <div className="text-center text-xs text-gray-500 mt-8 pb-4 md:hidden">
+      <p>© 2025 Vigh János Róbert - Minden jog fenntartva</p>
+    </div>
+  );
+}
+
 const GallerySection = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -170,6 +178,7 @@ const GallerySection = () => {
           </div>
         </div>
       )}
+      <Copyright />
     </div>
   );
 };
